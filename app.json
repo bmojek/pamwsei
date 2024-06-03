@@ -4,10 +4,8 @@
     "slug": "pamwsei",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,6 +23,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bdd9d429-2eb0-426e-a0bd-29c5f436bcc3"
+      }
+    },
+    "owner": "projektwseipam",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
