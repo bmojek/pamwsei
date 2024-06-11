@@ -83,7 +83,7 @@ const Posts = () => {
       {!user ? (
         <SafeAreaView>
           <Text style={styles.loginPrompt}>
-            Zaloguj się żeby zobaczyć Zadania
+            Zaloguj się żeby zobaczyć Posty
           </Text>
           <TouchableOpacity
             style={styles.button}

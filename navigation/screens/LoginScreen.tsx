@@ -7,14 +7,15 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { useAuth } from "../../app/contexts/AuthContext";
 import { useApiContext } from "../../app/contexts/ApiContext";
+import { NavTypes } from "../../app/types/NavTypes";
 
 const LoginScreen: React.FC = () => {
   const { login } = useAuth();
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<NavTypes>>();
   const { users } = useApiContext();
 
   const handleLogin = () => {
@@ -57,9 +58,9 @@ const LoginScreen: React.FC = () => {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Zaloguj</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
+      <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}>
         <Text style={styles.registerLink}>Zarejestruj się</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

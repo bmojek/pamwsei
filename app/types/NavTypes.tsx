@@ -6,4 +6,5 @@ export type NavTypes = {
   UserScreen: undefined;
   LoginScreen: undefined;
   AlbumScreen: { albumId: number };
+  RegisterScreen: undefined;
 };

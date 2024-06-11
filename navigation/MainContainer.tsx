@@ -9,7 +9,7 @@ import UserScreen from "./screens/UserScreen";
 import LoginScreen from "./screens/LoginScreen";
 import { NavTypes } from "../app/types/NavTypes";
 import AlbumScreen from "./screens/AlbumScreen";
-
+import RegisterScreen from "./screens/RegisterScreen";
 const Stack = createStackNavigator<NavTypes>();
 
 const AppNavigator = () => {
@@ -26,6 +26,7 @@ const AppNavigator = () => {
         <Stack.Screen name="UserScreen" component={UserScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="AlbumScreen" component={AlbumScreen} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
