@@ -18,7 +18,7 @@ type MergedPostType = PostType & { user: UserType; comments: CommentType[] };
 interface PostProps {
   post: MergedPostType;
   avatarUrl: string | undefined;
-  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  setComments?: React.Dispatch<React.SetStateAction<CommentType[]>>;
 }
 
 const Post: FC<PostProps> = ({ post, setComments, avatarUrl }) => {
@@ -61,36 +61,34 @@ const Post: FC<PostProps> = ({ post, setComments, avatarUrl }) => {
       <Text style={styles.username}>{post.user.username}</Text>
       <Text style={styles.body}>{post.body}</Text>
 
-      {/* Comment Section */}
-      <View style={styles.commentSection}>
-        {/* Render visible comments */}
-        {visibleComments.map((comment) => (
-          <View style={styles.comment} key={comment.id}>
-            <Text style={styles.commentEmail}>{comment.email}</Text>
-            <Text>{comment.body}</Text>
-          </View>
-        ))}
+      {setComments && (
+        <View style={styles.commentSection}>
+          {visibleComments.map((comment) => (
+            <View style={styles.comment} key={comment.id}>
+              <Text style={styles.commentEmail}>{comment.email}</Text>
+              <Text>{comment.body}</Text>
+            </View>
+          ))}
 
-        {/* Toggle comments button */}
-        {post.comments.length > 2 && (
-          <TouchableOpacity onPress={toggleComments}>
-            <Text>
-              {showAllComments
-                ? "Ukryj komentarze"
-                : "Pokaż wszystkie komentarze"}
-            </Text>
-          </TouchableOpacity>
-        )}
+          {post.comments.length > 2 && (
+            <TouchableOpacity onPress={toggleComments}>
+              <Text>
+                {showAllComments
+                  ? "Ukryj komentarze"
+                  : "Pokaż wszystkie komentarze"}
+              </Text>
+            </TouchableOpacity>
+          )}
 
-        {/* Comment Input */}
-        <TextInput
-          placeholder="Dodaj komentarz"
-          value={newComment}
-          onChangeText={setNewComment}
-          style={styles.commentInput}
-          onSubmitEditing={handleAddComment}
-        />
-      </View>
+          <TextInput
+            placeholder="Dodaj komentarz"
+            value={newComment}
+            onChangeText={setNewComment}
+            style={styles.commentInput}
+            onSubmitEditing={handleAddComment}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -101,6 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
+    width: "100%",
   },
   avatar: {
     width: 50,

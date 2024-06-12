@@ -68,7 +68,7 @@ const LoginScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingTop: "20%",
     padding: 20,
     backgroundColor: "white",
   },
