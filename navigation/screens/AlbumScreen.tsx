@@ -13,6 +13,7 @@ import { UserType } from "../../app/types/User.type";
 import { useApiContext } from "../../app/contexts/ApiContext";
 import { useAuth } from "../../app/contexts/AuthContext";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
 
 const AlbumScreen: React.FC = () => {
   const route = useRoute();
@@ -39,8 +40,20 @@ const AlbumScreen: React.FC = () => {
   );
   const isCurrentUserAlbum = albumOwner && albumOwner.id === user?.id;
 
-  const handleFileChange = (uri: string) => {
-    setSelectedFile(uri);
+  const handleFileChange = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const selectedUri = result.assets[0].uri;
+      setSelectedFile(selectedUri);
+    } else {
+      console.log("User cancelled image picker");
+    }
   };
 
   const handleUpload = () => {
@@ -70,12 +83,22 @@ const AlbumScreen: React.FC = () => {
       <Text>Nazwa albumu: {selectedAlbum.title}</Text>
       {isCurrentUserAlbum && (
         <View style={styles.uploadContainer}>
-          <TouchableOpacity onPress={() => handleFileChange("path/to/image")}>
+          <TouchableOpacity style={styles.button} onPress={handleFileChange}>
             <Text>Dodaj zdjęcie</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleUpload} disabled={!selectedFile}>
-            <Text>Dodaj</Text>
-          </TouchableOpacity>
+
+          {selectedFile && (
+            <>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUpload}
+                disabled={!selectedFile}
+              >
+                <Text>Dodaj</Text>
+              </TouchableOpacity>
+              <Text>Wybrano zdjęcie</Text>
+            </>
+          )}
         </View>
       )}
       <FlatList
@@ -89,6 +112,12 @@ const AlbumScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "lightblue",
+    padding: 7,
+    margin: 4,
+    borderRadius: 10,
+  },
   container: {
     flex: 1,
     padding: 16,

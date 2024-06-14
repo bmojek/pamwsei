@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { NavTypes } from "../../app/types/NavTypes";
@@ -24,8 +25,13 @@ const HomeScreen: React.FC = () => {
   const { logout, user } = useAuth();
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (photos && posts && users && comments && albums && todos) {
+      setLoading(false);
+    }
+
     const interval = setInterval(() => {
       setCurrentIndex(
         (prevIndex) => (prevIndex + 1) % photos.slice(0, 10).length
@@ -33,7 +39,7 @@ const HomeScreen: React.FC = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [photos]);
+  }, [photos, posts, users, comments, albums, todos]);
 
   const handleButtonPress = (buttonTitle: string) => {
     switch (buttonTitle) {
@@ -107,6 +113,14 @@ const HomeScreen: React.FC = () => {
 
   const uniquePostsByUser = getUniquePostsByUser().reverse();
 
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -171,7 +185,7 @@ const HomeScreen: React.FC = () => {
                 key={index}
                 post={post}
                 avatarUrl={getAvatarUrl(post.userId)}
-              ></Post>
+              />
             ))}
           </Pressable>
         </View>
@@ -183,7 +197,7 @@ const HomeScreen: React.FC = () => {
               {todos.map(
                 (todo, index) =>
                   todo.userId === user.id &&
-                  todo.completed && (
+                  !todo.completed && (
                     <View key={index} style={styles.todoItem}>
                       <View style={styles.todoTextContainer}>
                         <Text style={styles.todoText}>{todo.title}</Text>
@@ -243,6 +257,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     backgroundColor: "white",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   loginButton: {
     position: "absolute",
